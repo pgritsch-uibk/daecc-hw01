@@ -1,0 +1,32 @@
+apply plugin: 'java'
+apply plugin: 'application'
+
+group 'hw1'
+version '1.0-SNAPSHOT'
+
+application {
+    mainClassName = "hw1.LambdaInvoker"
+}
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile platform('com.amazonaws:aws-java-sdk-bom:1.12.319')
+    compile 'com.amazonaws:aws-java-sdk-lambda'
+    //compile fileTree('lib')
+}
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'hw1.LambdaInvoker'
+        )
+    }
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
